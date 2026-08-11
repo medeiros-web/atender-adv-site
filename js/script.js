@@ -1,6 +1,38 @@
 // Ano no rodapé
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// Service Worker (PWA offline + instalável)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((err) => {
+      console.error('Falha ao registrar o service worker:', err);
+    });
+  });
+}
+
+// Instalação do PWA (Chrome/Edge/Android — beforeinstallprompt)
+const installBtn = document.getElementById('installBtn');
+let deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  installBtn.hidden = false;
+});
+
+installBtn.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  installBtn.hidden = true;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+});
+
+window.addEventListener('appinstalled', () => {
+  installBtn.hidden = true;
+  deferredInstallPrompt = null;
+});
+
 // Menu mobile
 const navToggle = document.getElementById('navToggle');
 const nav = document.getElementById('nav');

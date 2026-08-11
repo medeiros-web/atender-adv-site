@@ -2,18 +2,24 @@
 
 ## O que é
 
-Landing page única (site estático, sem build) que apresenta as três plataformas
-Atender.adv e captura pedidos de orçamento para sites/apps sob medida.
+Landing page única (site estático, sem build), também instalável como PWA em
+celular e desktop, que apresenta as três plataformas Atender.adv e captura
+pedidos de orçamento para sites/apps sob medida.
 
 ## Estrutura
 
 ```
-index.html      # página única: header, hero, soluções, diferenciais, form de orçamento, rodapé
-css/style.css   # todo o CSS (tema dark, gradiente roxo/azul, responsivo)
-js/script.js    # menu mobile, animações de scroll, envio do form (JSON) para /api/contact
-api/contact.js  # Vercel Serverless Function — envia o form por e-mail via Resend
-.env.example    # modelo de env var (RESEND_API_KEY) — nunca commitar a chave real
-README.md       # instruções de setup/deploy
+index.html           # página única: header, hero, soluções, diferenciais, form, rodapé
+css/style.css        # todo o CSS (tema dark, gradiente roxo/azul, responsivo)
+js/script.js         # menu mobile, animações, envio do form, registro do SW e instalação PWA
+api/contact.js       # Vercel Serverless Function — envia o form por e-mail via Resend
+manifest.webmanifest # metadados do PWA (ícones, cores, display standalone, atalhos)
+sw.js                # Service Worker — cache offline (network-first navegação, cache-first assets)
+offline.html          # fallback exibido sem conexão e sem cache
+icons/                # ícones PWA (192/512/512-maskable/apple-touch/favicon)
+scripts/generate-icons.js # gera os PNGs em /icons via zlib/PNG puro (sem libs externas)
+.env.example          # modelo de env var (RESEND_API_KEY) — nunca commitar a chave real
+README.md             # instruções de setup/deploy/PWA
 ```
 
 Sem framework, sem bundler, sem dependências de build — qualquer edição em
@@ -56,6 +62,17 @@ local (git-ignorado). Nunca colar a chave em arquivos versionados.
 - BEM-like class naming (`.card__icon`, `.btn--primary`, etc.)
 - Sem emojis no HTML exceto nos ícones de "Diferenciais" (decorativos, já aprovados)
 - Responder sempre em português do Brasil
+
+## PWA
+
+- Instalável (Android/desktop via `beforeinstallprompt` + botão "Instalar app"
+  no header; iOS via Compartilhar → Adicionar à Tela de Início).
+- `sw.js` cacheia os assets estáticos; **sempre subir `CACHE_NAME` em `sw.js`**
+  (ex.: `atender-adv-v2`) ao alterar HTML/CSS/JS, senão usuários com o app
+  instalado continuam vendo a versão antiga.
+- Ícones são gerados, não desenhados — se houver logo definitivo da marca no
+  futuro, substituir os arquivos em `/icons` e não é mais necessário rodar
+  `scripts/generate-icons.js`.
 
 ## Pendências conhecidas
 

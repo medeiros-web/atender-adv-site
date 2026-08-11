@@ -179,8 +179,10 @@ body {
 .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 @media (max-width: 720px) {
-  .header__actions .btn--sm { display: none; }
+  .header__actions .btn--sm:not(.install-btn) { display: none; }
 }
+
+.install-btn[hidden] { display: none; }
 
 /* Hero */
 .hero {
