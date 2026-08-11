@@ -43,11 +43,6 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const actionUrl = form.getAttribute('action');
-  if (!actionUrl || actionUrl.includes('SEU_FORM_ID')) {
-    statusEl.textContent = 'Formulário ainda não configurado. Envie um e-mail para medeirosassessor.adv@gmail.com.';
-    statusEl.dataset.state = 'error';
-    return;
-  }
 
   submitBtn.disabled = true;
   submitBtn.textContent = 'Enviando...';
@@ -55,10 +50,12 @@ form.addEventListener('submit', async (e) => {
   statusEl.dataset.state = 'loading';
 
   try {
+    const payload = Object.fromEntries(new FormData(form).entries());
+
     const response = await fetch(actionUrl, {
       method: 'POST',
-      body: new FormData(form),
-      headers: { Accept: 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     });
 
     if (response.ok) {
