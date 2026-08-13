@@ -113,10 +113,9 @@ Console, declare o Resend como *prestador de serviço* processando dados em
 seu nome (não como "compartilhamento" para fins de terceiros) — confira a
 ajuda do próprio Console, pois a Google atualiza esses critérios com frequência.
 
-## Assets ainda pendentes (não gerados)
+## Assets
 
-- [ ] Ícone do app (usar `icons/icon-512.png`, já no repositório)
-- [ ] Gráfico de destaque 1024×500
+- [x] Ícone do app — `icons/icon-512.png`
+- [x] Gráfico de destaque 1024×500 — `store-assets/feature-graphic-1024x500.png`
 - [ ] Screenshots reais do app (mínimo 2, recomendado 4+) — tirar prints do
-      site rodando no celular/emulador, já que não há ferramenta de captura
-      de tela disponível para gerar isso automaticamente
+      site rodando no celular/emulador
