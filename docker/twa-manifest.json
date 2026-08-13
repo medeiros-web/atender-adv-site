@@ -1,0 +1,39 @@
+{
+  "packageId": "br.ia.chatatender.tecnologia.twa",
+  "host": "tecnologia.chatatender.ia.br",
+  "name": "Atender.adv",
+  "launcherName": "Atender.adv",
+  "display": "standalone",
+  "themeColor": "#0b0d14",
+  "navigationColor": "#0b0d14",
+  "navigationColorDark": "#0b0d14",
+  "navigationDividerColor": "#0b0d14",
+  "navigationDividerColorDark": "#0b0d14",
+  "backgroundColor": "#0b0d14",
+  "enableNotifications": false,
+  "startUrl": "/?source=twa",
+  "webManifestUrl": "https://tecnologia.chatatender.ia.br/manifest.webmanifest",
+  "iconUrl": "https://tecnologia.chatatender.ia.br/icons/icon-512.png",
+  "maskableIconUrl": "https://tecnologia.chatatender.ia.br/icons/icon-maskable-512.png",
+  "shortcuts": [
+    {
+      "name": "Solicitar orçamento",
+      "shortName": "Orçamento",
+      "url": "/?source=twa#orcamento"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "orientation": "portrait-primary",
+  "fingerprints": [],
+  "shareTarget": null
+}

@@ -20,8 +20,11 @@ icons/                # ícones PWA (192/512/512-maskable/apple-touch/favicon)
 scripts/generate-icons.js # gera os PNGs em /icons via zlib/PNG puro (sem libs externas)
 docker/nginx.conf     # nginx do deploy Portainer: serve estático + proxy /api/ -> backend
 docker/server.js      # backend Node puro (equivalente ao api/contact.js) do deploy Portainer
+docker/twa-manifest.json # config Bubblewrap para gerar o app Android (Google Play)
+privacidade.html      # política de privacidade (exigida pela Play Store)
+.well-known/assetlinks.json # verificação de domínio do app Android (TWA) — fingerprint ainda placeholder
 .env.example          # modelo de env var (RESEND_API_KEY) — nunca commitar a chave real
-README.md             # instruções de setup/deploy/PWA
+README.md             # instruções de setup/deploy/PWA/Google Play
 ```
 
 Sem framework, sem bundler, sem dependências de build — qualquer edição em
@@ -89,6 +92,20 @@ local (git-ignorado). Nunca colar a chave em arquivos versionados.
   futuro, substituir os arquivos em `/icons` e não é mais necessário rodar
   `scripts/generate-icons.js`.
 
+## Google Play (Android via TWA)
+
+- Domínio oficial do app (confirmado com o usuário): **tecnologia.chatatender.ia.br**.
+- Package id escolhido: `br.ia.chatatender.tecnologia.twa`.
+- Pré-requisitos técnicos já no projeto: manifest compatível com TWA, `privacidade.html`,
+  `.well-known/assetlinks.json` (placeholder), `docker/twa-manifest.json` (config Bubblewrap).
+- **Gerar o `.aab` assinado não é possível neste ambiente** (Bubblewrap precisa de
+  terminal interativo real para o wizard de instalação do JDK — trava em shell
+  automatizado). Caminho indicado ao usuário: PWABuilder.com (sem instalar nada)
+  ou Bubblewrap CLI local. Ver passo a passo completo no README.md.
+- Depois que o usuário gerar o pacote: pegar o `sha256_cert_fingerprints` real e
+  atualizar `.well-known/assetlinks.json` nos dois deploys (placeholder atual:
+  `SUBSTITUA_PELO_SHA256_DO_CERTIFICADO_DE_ASSINATURA_DO_APP`).
+
 ## Pendências conhecidas
 
 - [ ] Configurar `RESEND_API_KEY` nas env vars do projeto na Vercel (ver README.md)
@@ -96,3 +113,5 @@ local (git-ignorado). Nunca colar a chave em arquivos versionados.
       sem confirmar o número com o usuário antes
 - [ ] Domínio próprio (ex.: www.atender.adv.br) ainda não apontado — hoje só a URL
       gerada pela Vercel
+- [ ] Gerar pacote Android assinado e completar `assetlinks.json` com o fingerprint real
+- [ ] Gráfico de destaque (1024×500) e screenshots reais para a ficha da Play Store

@@ -18,6 +18,9 @@ icons/               # ícones do PWA (gerados por scripts/generate-icons.js)
 scripts/generate-icons.js # gera os PNGs em /icons sem dependências externas
 docker/nginx.conf    # config do nginx usado no deploy Portainer (serve estático + proxy /api/)
 docker/server.js     # backend standalone (Node puro) equivalente ao api/contact.js, para o deploy Portainer
+docker/twa-manifest.json # config para gerar o app Android (Bubblewrap) — ver seção "Google Play"
+privacidade.html     # política de privacidade (exigida pela Play Store)
+.well-known/assetlinks.json # verificação de domínio para o app Android (TWA)
 .env.example        # modelo da variável de ambiente necessária
 ```
 
@@ -83,12 +86,79 @@ lista de apps) e funciona offline para as páginas já visitadas.
   `CACHE_NAME` em `sw.js` (ex.: `atender-adv-v2`) — sem isso, usuários que já
   instalaram o app podem continuar vendo a versão antiga em cache por um tempo.
 
+## Google Play (publicar como app Android)
+
+O app na Play Store é o mesmo PWA, empacotado com **TWA — Trusted Web Activity**
+(uma casca Android que abre o site em tela cheia, sem barra de navegador). O
+domínio oficial do app é **tecnologia.chatatender.ia.br**.
+
+### O que já está pronto no projeto
+
+- `manifest.webmanifest` já cumpre os requisitos técnicos do TWA (`display: standalone`,
+  ícone 512×512 `any` + `maskable`, `theme_color`/`background_color`, `start_url`).
+- `privacidade.html` — política de privacidade (a Play Store **exige** uma URL de
+  política sempre que o app coleta dado pessoal, que é o caso do formulário de orçamento).
+- `.well-known/assetlinks.json` — arquivo de verificação de domínio, já publicado em
+  tecnologia.chatatender.ia.br/.well-known/assetlinks.json, mas ainda com um
+  **placeholder** no lugar do `sha256_cert_fingerprints` (só existe depois que o
+  pacote Android é assinado — ver abaixo).
+- `docker/twa-manifest.json` — config pronta para a ferramenta Bubblewrap (host,
+  cores, ícones, package id `br.ia.chatatender.tecnologia.twa`).
+
+### O que falta (exige geração de um pacote assinado — não é possível fazer isso por aqui)
+
+Gerar o `.aab` (Android App Bundle) exige um keystore de assinatura, que precisa
+ficar guardado com segurança — isso não é algo que deva ser feito num agente
+automatizado. Duas formas de gerar, escolha uma:
+
+**Opção 1 — PWABuilder.com (recomendada, sem instalar nada):**
+1. Acesse [pwabuilder.com](https://www.pwabuilder.com) e digite `https://tecnologia.chatatender.ia.br`.
+2. Clique em "Package for stores" → Android.
+3. Baixe o pacote — o PWABuilder gera um keystore novo automaticamente e deixa
+   baixar o `.aab` assinado, o keystore (`.jks`) e a senha.
+4. **Guarde o keystore e a senha em local seguro** (ex.: gerenciador de senhas) —
+   sem eles não dá para atualizar o app depois.
+5. O pacote também informa o `sha256_cert_fingerprints` do certificado gerado.
+
+**Opção 2 — Bubblewrap CLI (linha de comando, precisa de um terminal interativo):**
+```bash
+npm i -g @bubblewrap/cli
+bubblewrap init --manifest=https://tecnologia.chatatender.ia.br/manifest.webmanifest
+# ou reaproveitar docker/twa-manifest.json copiando para a pasta do projeto Android
+bubblewrap build
+```
+Bubblewrap oferece baixar o JDK/Android SDK automaticamente na primeira execução.
+
+### Depois de gerar o pacote
+
+1. Pegue o `sha256_cert_fingerprints` do keystore gerado e substitua o placeholder
+   em `.well-known/assetlinks.json` (nos dois deploys — Vercel via git push,
+   Portainer recriando o Docker Config `tecnologia-assetlinks-v1`).
+2. Confirme a verificação em
+   [Digital Asset Links Tester do Google](https://developers.google.com/digital-asset-links/tools/generator).
+3. No [Google Play Console](https://play.google.com/console) (conta de desenvolvedor,
+   taxa única de US$ 25): criar o app, subir o `.aab`, preencher:
+   - **Política de privacidade:** `https://tecnologia.chatatender.ia.br/privacidade.html`
+   - **Formulário de segurança dos dados:** o app coleta nome, e-mail e telefone
+     enviados voluntariamente pelo usuário no formulário de orçamento, transmitidos
+     criptografados, usados só para responder ao pedido, não compartilhados com
+     terceiros (exceto o Resend, como processador técnico de e-mail).
+   - **Classificação de conteúdo:** questionário padrão — site institucional,
+     sem conteúdo sensível.
+   - **Ficha da loja:** título, descrição curta/longa, ícone (usar `icons/icon-512.png`),
+     screenshots (tirar prints do site/app real — mínimo 2) e gráfico de destaque
+     1024×500 (ainda não existe no projeto, precisa ser criado).
+
 ## Pendências (TODO)
 
 - [ ] Configurar `RESEND_API_KEY` nas variáveis de ambiente do projeto na Vercel.
 - [ ] (Opcional) Verificar domínio próprio no Resend e trocar o remetente.
 - [ ] Se quiser botão de WhatsApp flutuante, adicionar número real (não incluído por padrão).
 - [ ] Trocar favicon/logo genérico por identidade visual definitiva, se houver.
+- [ ] Gerar o pacote Android assinado (PWABuilder ou Bubblewrap) e preencher o
+      `sha256_cert_fingerprints` real em `.well-known/assetlinks.json`.
+- [ ] Criar gráfico de destaque (1024×500) e screenshots reais para a ficha da Play Store.
+- [ ] Criar conta de desenvolvedor Google Play e completar o cadastro do app.
 
 ## Deploy
 
