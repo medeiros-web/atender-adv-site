@@ -12,12 +12,14 @@ pedidos de orçamento para sites/apps sob medida.
 index.html           # página única: header, hero, soluções, diferenciais, form, rodapé
 css/style.css        # todo o CSS (tema dark, gradiente roxo/azul, responsivo)
 js/script.js         # menu mobile, animações, envio do form, registro do SW e instalação PWA
-api/contact.js       # Vercel Serverless Function — envia o form por e-mail via Resend
+api/contact.js       # Vercel Serverless Function — envia o form por e-mail via Resend (deploy Vercel)
 manifest.webmanifest # metadados do PWA (ícones, cores, display standalone, atalhos)
 sw.js                # Service Worker — cache offline (network-first navegação, cache-first assets)
 offline.html          # fallback exibido sem conexão e sem cache
 icons/                # ícones PWA (192/512/512-maskable/apple-touch/favicon)
 scripts/generate-icons.js # gera os PNGs em /icons via zlib/PNG puro (sem libs externas)
+docker/nginx.conf     # nginx do deploy Portainer: serve estático + proxy /api/ -> backend
+docker/server.js      # backend Node puro (equivalente ao api/contact.js) do deploy Portainer
 .env.example          # modelo de env var (RESEND_API_KEY) — nunca commitar a chave real
 README.md             # instruções de setup/deploy/PWA
 ```
@@ -50,10 +52,23 @@ local (git-ignorado). Nunca colar a chave em arquivos versionados.
 
 ## Infraestrutura de deploy
 
+**Duas hospedagens ativas em paralelo, ambas a partir do mesmo `main` — manter as duas funcionando.**
+
 - **Git remoto:** github.com/medeiros-web/atender-adv-site
-- **Hospedagem:** Vercel, projeto na team `medeiros-assessoria-s-projects`
-  (team_oBYxdKZ4hmVessNfbIOSblS1)
-- Site estático — framework "Other" no Vercel, sem build command.
+
+### Vercel
+- Projeto na team `medeiros-assessoria-s-projects` (team_oBYxdKZ4hmVessNfbIOSblS1)
+- Site estático — framework "Other" no Vercel, sem build command
+- Auto-deploy a cada push no `main` (projetos `atender-adv-site` e `atender-adv-site-t28m`, duplicados — mantidos por decisão do usuário)
+- URL: atender-adv-site.vercel.app
+- Backend do form: `api/contact.js` (Vercel Serverless Function)
+
+### Portainer / Docker Swarm (chatatender.ia.br)
+- Portainer: `portainer.chatatender.ia.br` (endpoint `primary`, id 1), rede `minha_rede`, Traefik `certresolver=letsencryptresolver`
+- Stack lógico `tecnologia` (label `com.docker.stack.namespace=tecnologia`), dois serviços Swarm criados via API do Docker (não é um stack do Portainer no sentido de compose — services soltos com o label de namespace):
+  - `tecnologia_frontend` — `nginx:alpine`, arquivos estáticos injetados via **Docker Configs** (imutáveis — ver README.md para o processo de atualização), domínio **tecnologia.chatatender.ia.br**, proxy interno `/api/` → `tecnologia_backend`
+  - `tecnologia_backend` — `node:20-alpine`, roda `docker/server.js` (Config montado em `/app/server.js`), domínio **tecnologiaapi.chatatender.ia.br**, env `RESEND_API_KEY`/`TO_EMAIL`/`CORS_ORIGIN`/`PORT` no Service Spec
+- **Ao editar HTML/CSS/JS/ícones: replicar a mudança nos dois deploys.** Vercel é automático (push); Portainer exige criar novos Docker Configs e atualizar os services (processo documentado no README.md) — perguntar ao usuário se quer que isso seja feito a cada mudança ou só quando pedido.
 
 ## Convenções de estilo já estabelecidas
 
