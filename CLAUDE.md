@@ -38,6 +38,7 @@ Sem framework, sem bundler, sem dependências de build — qualquer edição em
 | Atendimento — Chat | https://chat.atender.adv.br/ |
 | Atendimento — Painel | https://painel.atender.adv.br/landing |
 | Agente de IA | https://bot.atender.adv.br/ |
+| Agente de IA — Landing | https://agente.chatatender.ia.br/landing |
 
 ## Formulário de orçamento
 
