@@ -37,12 +37,18 @@
     {
       "name": "Solicitar orçamento",
       "url": "/?source=pwa#orcamento",
-      "description": "Pedir orçamento de site ou app sob medida"
+      "description": "Pedir orçamento de site ou app sob medida",
+      "icons": [
+        { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }
+      ]
     },
     {
       "name": "Agente de IA",
       "url": "https://bot.atender.adv.br/",
-      "description": "Abrir o Agente de IA"
+      "description": "Abrir o Agente de IA",
+      "icons": [
+        { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }
+      ]
     }
   ]
 }
