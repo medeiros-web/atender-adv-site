@@ -34,7 +34,7 @@ Sem framework, sem bundler, sem dependências de build — qualquer edição em
 
 | Plataforma | URL |
 |---|---|
-| Criação de Sites e Apps com IA (Lovable) | https://lovablezheus.atender.adv.br/landing |
+| Criação de Sites e Apps com IA | https://app.creation.dev.br/planos.html |
 | Atendimento — Chat | https://chat.atender.adv.br/ |
 | Atendimento — Painel | https://painel.atender.adv.br/landing |
 | Agente de IA | https://bot.atender.adv.br/ |
