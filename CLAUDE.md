@@ -34,7 +34,7 @@ Sem framework, sem bundler, sem dependências de build — qualquer edição em
 
 | Plataforma | URL |
 |---|---|
-| Criação de Sites e Apps com IA | https://app.creation.dev.br/planos.html |
+| Criação de Sites e Apps com IA | https://creation.atender.adv.br/ |
 | Atendimento — Chat | https://chat.atender.adv.br/ |
 | Atendimento — Painel | https://painel.atender.adv.br/landing |
 | Agente de IA | https://bot.atender.adv.br/ |
