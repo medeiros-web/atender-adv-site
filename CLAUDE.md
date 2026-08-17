@@ -17,6 +17,7 @@ manifest.webmanifest # metadados do PWA (ícones, cores, display standalone, ata
 sw.js                # Service Worker — cache offline (network-first navegação, cache-first assets)
 offline.html          # fallback exibido sem conexão e sem cache
 icons/                # ícones PWA (192/512/512-maskable/apple-touch/favicon)
+assets/screenshots/   # capturas reais das plataformas (creation/chat/bot), usadas nos cards de Soluções
 scripts/generate-icons.js # gera os PNGs em /icons via zlib/PNG puro (sem libs externas)
 docker/nginx.conf     # nginx do deploy Portainer: serve estático + proxy /api/ -> backend
 docker/server.js      # backend Node puro (equivalente ao api/contact.js) do deploy Portainer

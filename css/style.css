@@ -299,6 +299,21 @@ h1 {
   transform: translateY(-4px);
   border-color: rgba(139, 92, 246, 0.35);
 }
+.card__preview {
+  margin: -32px -28px 24px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: #05060a;
+  border-bottom: 1px solid var(--card-border);
+}
+.card__preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
 .card__icon {
   width: 48px; height: 48px;
   border-radius: 12px;
