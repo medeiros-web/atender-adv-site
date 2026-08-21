@@ -365,6 +365,42 @@ h1 {
 }
 .card__actions .btn { flex: 1; }
 
+/* Featured card (Destaque) */
+.card--featured {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 28px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.14), rgba(59, 130, 246, 0.14));
+  border-color: rgba(139, 92, 246, 0.4);
+}
+.card--featured .card__icon { margin-bottom: 0; flex-shrink: 0; }
+.card--featured h3 { margin-bottom: 6px; }
+.card--featured p { margin-bottom: 0; }
+.card--featured .btn { flex-shrink: 0; }
+.badge--featured {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-grad);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+@media (max-width: 780px) {
+  .card--featured {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+  }
+}
+
 /* Features */
 .features {
   display: grid;
