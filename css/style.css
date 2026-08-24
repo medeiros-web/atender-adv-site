@@ -375,7 +375,14 @@ h1 {
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.14), rgba(59, 130, 246, 0.14));
   border-color: rgba(139, 92, 246, 0.4);
 }
-.card--featured .card__icon { margin-bottom: 0; flex-shrink: 0; }
+.card--featured .card__preview {
+  margin: 0;
+  width: 130px;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  flex-shrink: 0;
+  border: 1px solid var(--card-border);
+}
 .card--featured h3 { margin-bottom: 6px; }
 .card--featured p { margin-bottom: 0; }
 .card--featured .btn { flex-shrink: 0; }
