@@ -440,6 +440,95 @@ h1 {
 .feature h4 { margin: 0 0 8px; font-size: 1.02rem; font-weight: 700; }
 .feature p { margin: 0; color: var(--text-dim); font-size: 0.9rem; }
 
+/* Pitch (chamada de projeto sob medida) */
+.pitch {
+  margin: 8px 0 40px;
+  padding: 32px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+}
+.pitch__block + .pitch__block { margin-top: 28px; }
+.pitch__title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-1);
+  margin: 0 0 14px;
+}
+.pitch__services {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.pitch__services li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.pitch__checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pitch__checklist li {
+  position: relative;
+  padding-left: 28px;
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.pitch__checklist li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-grad);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pitch__closing {
+  margin: 28px 0 0;
+  padding-left: 18px;
+  border-left: 3px solid var(--accent-1);
+  color: var(--text);
+  font-size: 1rem;
+  font-style: italic;
+}
+.pitch__cta {
+  margin: 24px 0 0;
+  padding: 16px 20px;
+  background: var(--accent-grad);
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-align: center;
+}
+@media (max-width: 560px) {
+  .pitch { padding: 24px 20px; }
+}
+
 /* Form */
 .form {
   background: var(--card);

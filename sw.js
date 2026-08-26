@@ -1,6 +1,6 @@
 // Service Worker do Atender.adv — cache dos assets estáticos + fallback offline.
 // Ao mudar qualquer arquivo estático, suba a versão do CACHE_NAME para invalidar o cache antigo.
-const CACHE_NAME = 'atender-adv-v5';
+const CACHE_NAME = 'atender-adv-v6';
 
 const PRECACHE_URLS = [
   '/',
