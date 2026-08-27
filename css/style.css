@@ -633,6 +633,110 @@ h1 {
 .form__note[data-state="error"] { color: #f87171; }
 .form__note[data-state="loading"] { color: var(--text-dim); }
 
+/* Ecossistema (carrossel) */
+.atv-eco-strip{
+  --atv-bg: #0c0a16;
+  --atv-bg-2: #120f22;
+  --atv-border: #2a2540;
+  --atv-text: #f2f0fa;
+  --atv-text-dim: #9c97b8;
+  --atv-accent: #7c5cff;
+  --atv-accent-2: #35d6a6;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, var(--atv-bg-2), var(--atv-bg));
+  padding: 26px 0;
+  overflow: hidden;
+  font-family: 'Segoe UI', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+.atv-eco-strip *{ box-sizing: border-box; }
+
+.atv-eco-track-wrap{
+  position: relative;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+}
+.atv-eco-track{
+  display: flex;
+  gap: 18px;
+  width: max-content;
+  padding: 4px 24px;
+  animation: atv-eco-scroll 42s linear infinite;
+}
+.atv-eco-strip:hover .atv-eco-track,
+.atv-eco-track:focus-within{
+  animation-play-state: paused;
+}
+@keyframes atv-eco-scroll{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(-50%); }
+}
+
+.atv-eco-card{
+  flex: 0 0 auto;
+  width: 168px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 16px;
+  padding: 10px;
+  border: 1px solid transparent;
+  transition: border-color .18s ease, background .18s ease, transform .18s ease;
+}
+.atv-eco-card:hover, .atv-eco-card:focus-visible{
+  border-color: var(--atv-border);
+  background: rgba(124,92,255,0.08);
+  transform: translateY(-3px);
+}
+.atv-eco-card:focus-visible{ outline: 2px solid var(--atv-accent-2); outline-offset: 2px; }
+.atv-eco-thumb{
+  width: 100%;
+  aspect-ratio: 4/5;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--atv-bg-2);
+  border: 1px solid var(--atv-border);
+}
+.atv-eco-thumb img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.atv-eco-name{
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--atv-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.atv-eco-name svg{ flex: 0 0 auto; opacity: 0.7; }
+.atv-eco-tag{
+  font-size: 11.5px;
+  color: var(--atv-text-dim);
+  line-height: 1.4;
+}
+
+@media (max-width: 640px){
+  .atv-eco-card{ width: 142px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .atv-eco-track{
+    animation: none;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: 8px;
+  }
+  .atv-eco-card{ scroll-snap-align: start; }
+}
+
 /* Footer */
 .footer {
   position: relative;
