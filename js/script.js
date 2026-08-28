@@ -1,6 +1,72 @@
 // Ano no rodapé
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// Tema claro/escuro (balança da justiça)
+const themeToggle = document.getElementById('themeToggle');
+const themeColorMeta = document.getElementById('themeColorMeta');
+const THEME_COLORS = { dark: '#0b0d14', light: '#f5f4fb' };
+const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+function currentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+
+// Sincroniza o botão com o tema já aplicado pelo script inline no <head>
+themeToggle.setAttribute('aria-pressed', String(currentTheme() === 'light'));
+themeToggle.setAttribute('aria-label', currentTheme() === 'light' ? 'Ativar tema escuro' : 'Ativar tema claro');
+
+function applyTheme(theme) {
+  if (theme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  document.documentElement.style.colorScheme = theme;
+  themeColorMeta.setAttribute('content', THEME_COLORS[theme]);
+  themeToggle.setAttribute('aria-pressed', String(theme === 'light'));
+  themeToggle.setAttribute('aria-label', theme === 'light' ? 'Ativar tema escuro' : 'Ativar tema claro');
+  try { localStorage.setItem('atv-theme', theme); } catch (e) {}
+}
+
+themeToggle.addEventListener('click', (event) => {
+  const nextTheme = currentTheme() === 'light' ? 'dark' : 'light';
+
+  themeToggle.classList.remove('is-weighing');
+  void themeToggle.offsetWidth; // reinicia a animação se clicar rápido de novo
+  themeToggle.classList.add('is-weighing');
+
+  const canAnimatePage = document.startViewTransition && !prefersReducedMotion.matches;
+
+  if (canAnimatePage) {
+    const rect = themeToggle.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const radius = Math.hypot(
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y)
+    );
+
+    const transition = document.startViewTransition(() => applyTheme(nextTheme));
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${radius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration: 650,
+          easing: 'ease-in-out',
+          pseudoElement: '::view-transition-new(root)',
+        }
+      );
+    }).catch(() => {});
+  } else {
+    applyTheme(nextTheme);
+  }
+});
+
 // Service Worker (PWA offline + instalável)
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

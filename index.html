@@ -9,8 +9,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#0b0d14">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0b0d14" id="themeColorMeta">
+<meta name="color-scheme" content="dark light">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,6 +19,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('atv-theme');
+    var theme = saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    document.documentElement.style.colorScheme = theme;
+  } catch (e) {}
+})();
+</script>
 </head>
 <body>
 
@@ -40,6 +50,19 @@
     </nav>
 
     <div class="header__actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ativar tema claro" aria-pressed="false">
+        <span class="theme-toggle__pulse" aria-hidden="true"></span>
+        <svg class="theme-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 4v16"/>
+          <path d="M8.5 20h7"/>
+          <path d="M12 4l-1.4 1.8h2.8L12 4Z" fill="currentColor" stroke="none"/>
+          <g class="theme-toggle__beam">
+            <path d="M5 7.5h14"/>
+            <path d="M5 7.5 2.6 12.7a2.5 2.5 0 0 0 4.8 0L5 7.5Z"/>
+            <path d="M19 7.5l-2.4 5.2a2.5 2.5 0 0 0 4.8 0L19 7.5Z"/>
+          </g>
+        </svg>
+      </button>
       <button class="btn btn--ghost btn--sm install-btn" id="installBtn" hidden>
         <span aria-hidden="true">⬇</span> Instalar app
       </button>

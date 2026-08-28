@@ -1,8 +1,13 @@
 :root {
   --bg: #0b0d14;
+  --bg-rgb: 11, 13, 20;
   --bg-alt: #0f1220;
   --card: #12151f;
   --card-border: rgba(255, 255, 255, 0.08);
+  --card-border-strong: rgba(255, 255, 255, 0.25);
+  --surface-tint: rgba(255, 255, 255, 0.03);
+  --surface-tint-strong: rgba(255, 255, 255, 0.05);
+  --alt-tint: rgba(255, 255, 255, 0.015);
   --text: #f2f3f7;
   --text-dim: #a3a8bd;
   --text-dimmer: #6b7086;
@@ -11,6 +16,23 @@
   --accent-grad: linear-gradient(135deg, var(--accent-1), var(--accent-2));
   --radius: 16px;
   --header-h: 76px;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #f5f4fb;
+  --bg-rgb: 245, 244, 251;
+  --bg-alt: #ffffff;
+  --card: #ffffff;
+  --card-border: rgba(20, 18, 38, 0.09);
+  --card-border-strong: rgba(20, 18, 38, 0.22);
+  --surface-tint: rgba(20, 18, 38, 0.035);
+  --surface-tint-strong: rgba(20, 18, 38, 0.06);
+  --alt-tint: rgba(20, 18, 38, 0.025);
+  --text: #16141f;
+  --text-dim: #55516e;
+  --text-dimmer: #7c7894;
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -24,6 +46,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -63,9 +86,10 @@ body {
   height: var(--header-h);
   display: flex;
   align-items: center;
-  background: rgba(11, 13, 20, 0.7);
+  background: rgba(var(--bg-rgb), 0.7);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--card-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 .header__inner {
   display: flex;
@@ -114,6 +138,78 @@ body {
   align-items: center;
   gap: 16px;
 }
+
+/* Theme toggle (balança da justiça) */
+.theme-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: var(--surface-tint);
+  color: var(--accent-1);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  border-color: var(--accent-1);
+  background: rgba(139, 92, 246, 0.1);
+  transform: translateY(-1px);
+}
+.theme-toggle:active { transform: translateY(0) scale(0.94); }
+.theme-toggle__icon {
+  width: 19px;
+  height: 19px;
+  position: relative;
+  z-index: 1;
+}
+.theme-toggle__beam { transform-origin: 12px 7.5px; }
+.theme-toggle.is-weighing .theme-toggle__beam {
+  animation: atv-scale-wobble 0.7s cubic-bezier(0.36, 1.75, 0.4, 1);
+}
+@keyframes atv-scale-wobble {
+  0%   { transform: rotate(0deg); }
+  22%  { transform: rotate(-10deg); }
+  50%  { transform: rotate(8deg); }
+  75%  { transform: rotate(-3deg); }
+  100% { transform: rotate(0deg); }
+}
+.theme-toggle__pulse {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-grad);
+  opacity: 0;
+  pointer-events: none;
+}
+.theme-toggle.is-weighing .theme-toggle__pulse {
+  animation: atv-toggle-pulse 0.6s ease-out;
+}
+@keyframes atv-toggle-pulse {
+  0%   { opacity: 0.45; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(1.9); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle.is-weighing .theme-toggle__beam,
+  .theme-toggle.is-weighing .theme-toggle__pulse { animation: none; }
+}
+
+/* View Transitions — troca de tema com revelação circular */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
 
 .nav-toggle {
   display: none;
@@ -165,14 +261,14 @@ body {
   color: var(--text);
   border: 1px solid var(--card-border);
 }
-.btn--ghost:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.03); }
+.btn--ghost:hover { border-color: var(--card-border-strong); background: var(--surface-tint); }
 .btn--outline {
-  background: rgba(255,255,255,0.02);
+  background: var(--surface-tint);
   color: var(--text);
   border: 1px solid var(--card-border);
   width: 100%;
 }
-.btn--outline:hover { border-color: var(--accent-1); color: #fff; background: rgba(139,92,246,0.08); }
+.btn--outline:hover { border-color: var(--accent-1); color: var(--text); background: rgba(139,92,246,0.08); }
 .btn--full { width: 100%; }
 .btn--lg { padding: 15px 24px; font-size: 1rem; }
 .btn--sm { padding: 10px 18px; font-size: 0.875rem; }
@@ -260,7 +356,7 @@ h1 {
   padding: 90px 0;
 }
 .section--alt {
-  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.015) 15%, rgba(255,255,255,0.015) 85%, transparent);
+  background: linear-gradient(180deg, transparent, var(--alt-tint) 15%, var(--alt-tint) 85%, transparent);
 }
 .section h2 {
   font-size: clamp(1.7rem, 3.4vw, 2.4rem);
@@ -304,7 +400,7 @@ h1 {
   border-radius: var(--radius) var(--radius) 0 0;
   overflow: hidden;
   aspect-ratio: 16 / 10;
-  background: #05060a;
+  background: var(--bg-alt);
   border-bottom: 1px solid var(--card-border);
 }
 .card__preview img {
@@ -434,7 +530,7 @@ h1 {
   padding: 26px;
   border-radius: var(--radius);
   border: 1px solid var(--card-border);
-  background: rgba(255,255,255,0.015);
+  background: var(--alt-tint);
 }
 .feature__icon { font-size: 1.6rem; margin-bottom: 12px; }
 .feature h4 { margin: 0 0 8px; font-size: 1.02rem; font-weight: 700; }
@@ -603,7 +699,7 @@ h1 {
 .field input,
 .field select,
 .field textarea {
-  background: rgba(255,255,255,0.03);
+  background: var(--surface-tint);
   border: 1px solid var(--card-border);
   border-radius: 10px;
   padding: 12px 14px;
@@ -617,7 +713,7 @@ h1 {
 .field select:focus,
 .field textarea:focus {
   border-color: var(--accent-1);
-  background: rgba(255,255,255,0.05);
+  background: var(--surface-tint-strong);
 }
 .field textarea { resize: vertical; min-height: 110px; }
 .field select { cursor: pointer; }
@@ -800,7 +896,7 @@ h1 {
     position: fixed;
     top: var(--header-h);
     left: 0; right: 0;
-    background: rgba(11, 13, 20, 0.98);
+    background: rgba(var(--bg-rgb), 0.98);
     backdrop-filter: blur(14px);
     flex-direction: column;
     padding: 20px 24px 30px;
