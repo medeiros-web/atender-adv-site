@@ -578,6 +578,96 @@ h1 {
   .courtesy__media { max-width: 320px; margin: 0 auto; }
 }
 
+/* Cosmos (convite contemplativo) */
+.cosmos {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding: 100px 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 30%, #0d1128 0%, #050611 55%, #030308 100%);
+  border-top: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+}
+.cosmos__stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.cosmos__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 34px;
+}
+.cosmos__thumb {
+  width: 100%;
+  max-width: 460px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(139, 176, 255, 0.18);
+  box-shadow: 0 0 0 1px rgba(139, 176, 255, 0.06), 0 30px 90px -30px rgba(80, 130, 255, 0.35);
+}
+.cosmos__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cosmos__line {
+  margin: 0;
+  max-width: 30ch;
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: #e4e9ff;
+  text-wrap: balance;
+}
+
+.cosmos__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 16px 34px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: #0b0d18;
+  background: linear-gradient(135deg, #dfe8ff, #ffffff);
+  box-shadow: 0 12px 34px -10px rgba(150, 180, 255, 0.55);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cosmos__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 42px -10px rgba(150, 180, 255, 0.7);
+}
+.cosmos__btn-label { position: relative; z-index: 1; }
+.cosmos__btn-glow {
+  position: absolute;
+  inset: -16px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(150, 180, 255, 0.55), transparent 70%);
+  filter: blur(10px);
+  z-index: 0;
+  animation: cosmos-pulse 3.2s ease-in-out infinite;
+}
+@keyframes cosmos-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cosmos__btn-glow { animation: none; }
+}
+
 /* Pitch (chamada de projeto sob medida) */
 .pitch {
   margin: 8px 0 40px;

@@ -171,3 +171,81 @@ form.addEventListener('submit', async (e) => {
     submitBtn.textContent = 'Solicitar orçamento';
   }
 });
+
+// Estrelas cintilantes da seção Cosmos
+const cosmosCanvas = document.getElementById('cosmosStars');
+if (cosmosCanvas) {
+  const ctx = cosmosCanvas.getContext('2d');
+  const cosmosSection = cosmosCanvas.closest('.cosmos');
+  let stars = [];
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let rafId = null;
+  let visible = false;
+
+  function resizeCosmos() {
+    const rect = cosmosSection.getBoundingClientRect();
+    cosmosCanvas.width = rect.width * dpr;
+    cosmosCanvas.height = rect.height * dpr;
+    cosmosCanvas.style.width = rect.width + 'px';
+    cosmosCanvas.style.height = rect.height + 'px';
+    const count = Math.round((rect.width * rect.height) / 9000);
+    stars = Array.from({ length: count }, () => ({
+      x: Math.random() * rect.width,
+      y: Math.random() * rect.height,
+      r: Math.random() * 1.3 + 0.3,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.015 + 0.006,
+    }));
+  }
+
+  function drawCosmos(time) {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cosmosCanvas.width, cosmosCanvas.height);
+    for (const s of stars) {
+      const twinkle = 0.5 + 0.5 * Math.sin(time * s.speed + s.phase);
+      ctx.globalAlpha = 0.25 + twinkle * 0.65;
+      ctx.fillStyle = '#eef2ff';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    if (visible && !prefersReducedMotion.matches) {
+      rafId = requestAnimationFrame(drawCosmos);
+    }
+  }
+
+  function startCosmos() {
+    if (rafId) return;
+    rafId = requestAnimationFrame(drawCosmos);
+  }
+  function stopCosmos() {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+
+  resizeCosmos();
+  drawCosmos(0);
+  if (prefersReducedMotion.matches) {
+    // desenha uma única vez, estático, sem animação contínua
+  } else {
+    const cosmosObserver = new IntersectionObserver(
+      (entries) => {
+        visible = entries[0].isIntersecting;
+        if (visible) startCosmos();
+        else stopCosmos();
+      },
+      { threshold: 0.05 }
+    );
+    cosmosObserver.observe(cosmosSection);
+  }
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      resizeCosmos();
+      drawCosmos(0);
+    }, 200);
+  });
+}
