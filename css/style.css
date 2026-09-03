@@ -940,6 +940,30 @@ h1 {
 .footer__brand { max-width: 280px; }
 .footer__brand .brand__name { display: block; margin-top: 12px; font-size: 1.1rem; }
 .footer__brand p { color: var(--text-dimmer); font-size: 0.9rem; margin-top: 10px; }
+.footer__social {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+.footer__social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px dashed var(--card-border);
+  color: var(--text-dimmer);
+  cursor: not-allowed;
+  flex-shrink: 0;
+}
+.footer__social-icon svg { width: 17px; height: 17px; }
+.footer__social-note {
+  font-size: 0.78rem;
+  color: var(--text-dimmer);
+  font-style: italic;
+}
 .footer__links {
   display: flex;
   gap: 64px;
