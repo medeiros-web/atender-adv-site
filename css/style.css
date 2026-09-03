@@ -993,19 +993,19 @@ h1 {
 }
 .footer__bottom p { margin: 0; color: var(--text-dimmer); font-size: 0.85rem; }
 .footer__bottom p.footer__internal {
-  margin-top: 10px;
-  font-size: 0.78rem;
-  opacity: 0.6;
+  margin-top: 14px;
+  font-size: 0.88rem;
+  color: var(--text-dim);
 }
 .footer__internal a {
-  color: var(--text-dimmer);
-  text-decoration: none;
-  border-bottom: 1px dotted var(--text-dimmer);
-  transition: color 0.2s, border-color 0.2s;
+  color: var(--accent-1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+  transition: color 0.2s;
 }
 .footer__internal a:hover {
-  color: var(--text-dim);
-  border-color: var(--text-dim);
+  color: var(--accent-2);
 }
 
 /* Reveal animation */
